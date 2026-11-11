@@ -1,0 +1,4 @@
+.unity-base-text-field__input {
+    color: rgb(235, 235, 235);
+    background-color: rgb(56, 56, 56);
+}

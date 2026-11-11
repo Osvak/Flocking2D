@@ -1,0 +1,48 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Style src="SimulationPanel.uss" />
+    <ui:VisualElement name="Panel" style="position: absolute; left: 10px; top: 10px; bottom: 10px; width: 400px; padding: 8px; background-color: rgba(20, 20, 20, 0.85); border-radius: 6px; color: rgb(235, 235, 235);">
+        <ui:Foldout name="SettingsFoldout" text="Flock Settings" value="true" style="flex-grow: 1;">
+            <ui:VisualElement style="flex-direction: row; margin-bottom: 6px;">
+                <ui:Button name="ResetSimulationButton" text="Reset Simulation" tooltip="Respawns the flock with the bird count below." style="flex-grow: 1;" />
+                <ui:Button name="ResetValuesButton" text="Reset Values" tooltip="Puts the sliders back to their starting values." style="flex-grow: 1;" />
+                <ui:Button name="PauseButton" text="Pause" tooltip="Pauses or resumes the simulation." style="flex-grow: 1;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-direction: row; margin-bottom: 6px;">
+                <ui:Button name="PresetCustom" text="Custom" tooltip="Your own values. Moving a slider switches to this." style="flex-grow: 1;" />
+                <ui:Button name="PresetMurmuration" text="Murmuration" tooltip="Big groups that split and merge." style="flex-grow: 1;" />
+                <ui:Button name="PresetTight" text="Tight" tooltip="Tight groups that stay together." style="flex-grow: 1;" />
+                <ui:Button name="PresetChaotic" text="Chaotic" tooltip="Fast birds in loose groups." style="flex-grow: 1;" />
+            </ui:VisualElement>
+            <ui:SliderInt name="BirdCount" label="Bird Count" low-value="1" high-value="10000" show-input-field="true" tooltip="Birds to spawn on the next Reset Simulation." />
+            <ui:ScrollView style="flex-grow: 1; flex-shrink: 1;">
+                <ui:Label text="Steering" style="-unity-font-style: bold; margin-top: 4px;" />
+                <ui:Slider name="AlignmentWeight" label="Alignment" low-value="0" high-value="5" show-input-field="true" tooltip="Turn to face the same way as neighbors." />
+                <ui:Slider name="SeparationWeight" label="Separation" low-value="0" high-value="5" show-input-field="true" tooltip="Steer away from birds inside the personal radius." />
+                <ui:Slider name="CohesionWeight" label="Cohesion" low-value="0" high-value="5" show-input-field="true" tooltip="Steer toward the middle of the neighbors." />
+                <ui:Slider name="EdgeWeight" label="Edge Weight" low-value="0" high-value="10" show-input-field="true" tooltip="How hard birds turn back at the screen edge." />
+                <ui:Slider name="EdgeMargin" label="Edge Margin" low-value="0" high-value="10" show-input-field="true" tooltip="How far from the edge birds start turning back." />
+                <ui:Slider name="TurnRate" label="Turn Rate" low-value="0" high-value="20" show-input-field="true" tooltip="How fast birds turn." />
+                <ui:Slider name="FieldOfViewDegrees" label="Field Of View" low-value="30" high-value="360" show-input-field="true" tooltip="View angle in degrees. 360 sees all around." />
+                <ui:Slider name="NeighborsRadius" label="Neighbor Radius" low-value="0.1" high-value="20" show-input-field="true" tooltip="How far a bird can see its neighbors." />
+                <ui:Slider name="PersonalRadius" label="Personal Radius" low-value="0.1" high-value="10" show-input-field="true" tooltip="Birds closer than this push each other away, even outside the view angle." />
+                <ui:Label text="Speed" style="-unity-font-style: bold; margin-top: 8px;" />
+                <ui:Slider name="CruiseSpeed" label="Cruise" low-value="0" high-value="20" show-input-field="true" tooltip="Speed a bird flies at on its own." />
+                <ui:Slider name="MinSpeed" label="Min" low-value="0" high-value="20" show-input-field="true" tooltip="Slowest a bird can fly." />
+                <ui:Slider name="MaxSpeed" label="Max" low-value="0" high-value="20" show-input-field="true" tooltip="Fastest a bird can fly." />
+                <ui:Slider name="SpeedMatchWeight" label="Match Weight" low-value="0" high-value="1" show-input-field="true" tooltip="0 ignores neighbor speed, 1 copies it." />
+                <ui:Slider name="CatchUpGain" label="Catch Up Gain" low-value="0" high-value="10" show-input-field="true" tooltip="Speed up when behind the group, slow down when ahead." />
+                <ui:Slider name="SpeedResponse" label="Response" low-value="0" high-value="20" show-input-field="true" tooltip="How fast birds change speed." />
+                <ui:Label text="Mouse (hold right button)" style="-unity-font-style: bold; margin-top: 8px;" />
+                <ui:Slider name="MouseRadius" label="Radius" low-value="0.5" high-value="30" show-input-field="true" tooltip="Birds inside this radius are pulled to the cursor." />
+                <ui:Slider name="MouseWeight" label="Weight" low-value="0" high-value="10" show-input-field="true" tooltip="How hard the cursor pulls." />
+                <ui:Foldout text="Debug" value="true" style="margin-top: 8px;">
+                    <ui:Toggle name="ShowMouseRadius" label="Mouse Radius" value="true" tooltip="Show the mouse radius." />
+                    <ui:Toggle name="ShowPersonalRadius" label="Personal Radius" value="true" tooltip="Show the selected bird's personal radius." />
+                    <ui:Toggle name="ShowNeighborRadius" label="Neighbor Radius" value="true" tooltip="Show the selected bird's neighbor radius." />
+                    <ui:Toggle name="ShowFieldOfView" label="Field Of View" value="true" tooltip="Show the selected bird's view angle." />
+                </ui:Foldout>
+            </ui:ScrollView>
+            <ui:Label name="HelpLabel" style="white-space: normal; height: 44px; flex-shrink: 0; margin-top: 6px; font-size: 11px; -unity-font-style: italic; color: rgb(190, 190, 190);" />
+        </ui:Foldout>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,33 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="SelectionRing" picking-mode="Ignore" style="position: absolute; display: none; border-width: 2px; border-color: rgb(255, 220, 80);" />
+    <ui:VisualElement name="MouseRing" picking-mode="Ignore" style="position: absolute; display: none; border-width: 2px; border-color: rgba(120, 200, 255, 0.9); background-color: rgba(120, 200, 255, 0.08);" />
+    <ui:Label name="PerformanceLabel" picking-mode="Ignore" text="-- FPS" style="position: absolute; right: 10px; bottom: 10px; padding: 4px 8px; background-color: rgba(20, 20, 20, 0.85); border-radius: 6px; color: rgb(235, 235, 235); -unity-font-style: bold; font-size: 14px; -unity-text-align: middle-right;" />
+    <ui:VisualElement name="BirdInfoPanel" style="position: absolute; display: none; right: 10px; top: 10px; width: 230px; padding: 8px; background-color: rgba(20, 20, 20, 0.85); border-radius: 6px; color: rgb(235, 235, 235);">
+        <ui:Label name="BirdNameLabel" text="Bird" style="-unity-font-style: bold; font-size: 14px; margin-bottom: 6px;" />
+        <ui:VisualElement style="flex-direction: row; justify-content: space-between;">
+            <ui:Label text="Position" style="color: rgb(170, 170, 170);" />
+            <ui:Label name="PositionValue" text="-" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-direction: row; justify-content: space-between;">
+            <ui:Label text="Heading" style="color: rgb(170, 170, 170);" />
+            <ui:Label name="HeadingValue" text="-" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-direction: row; justify-content: space-between;">
+            <ui:Label text="Speed" style="color: rgb(170, 170, 170);" />
+            <ui:Label name="SpeedValue" text="-" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-direction: row; justify-content: space-between;">
+            <ui:Label text="Visible neighbors" style="color: rgb(170, 170, 170);" />
+            <ui:Label name="NeighborsValue" text="-" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-direction: row; justify-content: space-between;">
+            <ui:Label text="Neighbor radius" style="color: rgb(170, 170, 170);" />
+            <ui:Label name="NeighborRadiusValue" text="-" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-direction: row; justify-content: space-between;">
+            <ui:Label text="Personal radius" style="color: rgb(170, 170, 170);" />
+            <ui:Label name="PersonalRadiusValue" text="-" />
+        </ui:VisualElement>
+        <ui:Button name="DeselectButton" text="Deselect" style="margin-top: 6px;" />
+    </ui:VisualElement>
+</ui:UXML>
