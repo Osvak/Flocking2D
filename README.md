@@ -1,5 +1,9 @@
 # Flocking2D
 
+![10,000 birds flocking at 60 FPS](docs/screenshot.png)
+
+**[Play it in the browser on itch.io](https://osvak.itch.io/flocking2d)** (a Windows build is there too)
+
 A 2D bird flocking simulation made in Unity using DOTS (Entities, Jobs and Burst). It's based on the classic boids idea: each bird only looks at the birds around it, and the flock shape comes out of that.
 
 It runs up to 10,000 birds. Birds are colored by speed, red when slower than cruise speed and yellow when faster.
@@ -10,11 +14,18 @@ Made with Unity 6000.6.5f1 and URP.
 
 Open the `Flocking2D` folder in Unity Hub, open `Assets/Scenes/MainScene` and press Play.
 
+## Builds
+
+- **Browser (HTML5)**: runs on a single thread, because browsers limit multithreading. Good for a quick look.
+- **Windows**: uses all CPU cores. Use this one for the highest bird counts.
+
+Both are on the [itch.io page](https://osvak.itch.io/flocking2d).
+
 ## Controls
 
 - **Left click** a bird to select it. A panel shows its position, heading, speed and how many neighbors it sees, and the debug circles are drawn around it.
 - **Hold right click** to pull nearby birds toward the cursor.
-- **Settings panel** on the left to change values while it runs.
+- **Settings panel** on the left to change values while it runs. Hover a setting to see what it does.
   - Reset Simulation respawns the birds using the Bird Count slider.
   - Reset Values puts the sliders back to the scene values.
   - Pause stops and resumes the simulation.
@@ -80,6 +91,15 @@ Default values are the ones the scene starts with (Custom).
 
 Toggles for drawing the mouse radius and, for the selected bird, its personal radius, neighbor radius and field of view.
 
+## How it's built
+
+- **ECS**: every bird is an entity, so there's no GameObject per bird.
+- **Jobs + Burst**: neighbor search and movement run as parallel jobs.
+- **Spatial hash grid**: birds are sorted into grid cells, and each bird searches outward ring by ring until it has its 16 nearest neighbors. The grid uses an adaptive cell size.
+- **GPU instancing**: birds are drawn in instanced batches with a custom shader that colors them by speed.
+- **Frame-rate independent easing**: turning and speed changes behave the same at any frame rate.
+- **UI Toolkit** for the panels and debug drawing, and the **Input System** for the mouse controls.
+
 ## Project layout
 
 ```
@@ -90,5 +110,3 @@ Assets/Scripts/Runtime/
   Rendering         instanced bird drawing and shader
   UI                settings panel, bird selection, FPS counter
 ```
-
-Neighbor search uses a spatial hash grid, and birds are drawn with GPU instancing instead of one GameObject per bird.
