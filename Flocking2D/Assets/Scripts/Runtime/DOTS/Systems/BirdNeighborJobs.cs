@@ -6,7 +6,7 @@ using Unity.Transforms;
 
 public static class BirdGrid
 {
-    private const int cellOffset = 32768;
+    private const int CellOffset = 32768;
 
     public static int2 GetCell(float3 position, float inverseCellSize)
     {
@@ -15,7 +15,7 @@ public static class BirdGrid
 
     public static int GetKey(int2 cell)
     {
-        int2 shifted = math.clamp(cell, -cellOffset, cellOffset - 1) + cellOffset;
+        int2 shifted = math.clamp(cell, -CellOffset, CellOffset - 1) + CellOffset;
 
         return shifted.x | (shifted.y << 16);
     }
@@ -27,7 +27,7 @@ public partial struct BuildGridJob : IJobEntity
 {
     [NativeDisableParallelForRestriction] public NativeArray<float3> positions;
     [NativeDisableParallelForRestriction] public NativeArray<float3> forwards;
-    [NativeDisableParallelForRestriction] public NativeArray<float> velocities;
+    [NativeDisableParallelForRestriction] public NativeArray<float> speeds;
     public NativeParallelMultiHashMap<int, int>.ParallelWriter gridWriter;
     public float inverseCellSize;
 
@@ -35,7 +35,7 @@ public partial struct BuildGridJob : IJobEntity
     {
         positions[entityIndex] = localTransform.Position;
         forwards[entityIndex] = math.mul(localTransform.Rotation, new float3(0f, 1f, 0f));
-        velocities[entityIndex] = birdMovement.velocity;
+        speeds[entityIndex] = birdMovement.speed;
 
         int key = BirdGrid.GetKey(BirdGrid.GetCell(localTransform.Position, inverseCellSize));
 
@@ -49,11 +49,11 @@ public partial struct FindNeighborsJob : IJobEntity
 {
     [ReadOnly] public NativeArray<float3> positions;
     [ReadOnly] public NativeArray<float3> forwards;
-    [ReadOnly] public NativeArray<float> velocities;
+    [ReadOnly] public NativeArray<float> speeds;
     [ReadOnly] public NativeParallelMultiHashMap<int, int> grid;
     public float cellSize;
     public float inverseCellSize;
-    public float neighborsRadiusSq;
+    public float neighborRadiusSq;
     public float searchRadius;
     public float searchRadiusSq;
     public float viewCosThreshold;
@@ -119,8 +119,8 @@ public partial struct FindNeighborsJob : IJobEntity
             {
                 position = positions[index],
                 forward = forwards[index],
-                velocity = velocities[index],
-                isVisible = distanceSq <= neighborsRadiusSq
+                speed = speeds[index],
+                isVisible = distanceSq <= neighborRadiusSq
                     && math.dot(forward, offset) / math.sqrt(distanceSq) >= viewCosThreshold
             };
 

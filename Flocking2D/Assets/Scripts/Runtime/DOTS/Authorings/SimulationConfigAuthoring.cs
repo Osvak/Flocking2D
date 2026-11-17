@@ -13,7 +13,7 @@ class SimulationConfigAuthoring : MonoBehaviour
         edgeMargin = 2f,
         turnRate = 4f,
         fieldOfViewDegrees = 240f,
-        neighborsRadius = 1.5f,
+        neighborRadius = 1.5f,
         personalRadius = 0.4f,
         cruiseSpeed = 3f,
         minSpeed = 1.5f,

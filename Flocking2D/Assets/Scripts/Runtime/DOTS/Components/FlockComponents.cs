@@ -1,7 +1,5 @@
-using UnityEngine;
 using Unity.Entities;
 using Unity.Mathematics;
-using Unity.Collections;
 
 public struct SpawnerData : IComponentData
 {
@@ -21,19 +19,20 @@ public struct ScreenBoundsData : IComponentData
 
 public struct BirdData : IComponentData
 {
-    public int ID;
+    public int id;
 }
 
 public struct BirdMovement : IComponentData
 {
-    public float velocity;
+    public float speed;
 }
 
-[InternalBufferCapacity(8)]
+// matches BirdMovementSystem.MaxNeighborCount so the list always fits inside the chunk
+[InternalBufferCapacity(BirdMovementSystem.MaxNeighborCount)]
 public struct CloseNeighbors : IBufferElementData
 {
     public float3 position;
     public float3 forward;
-    public float velocity;
+    public float speed;
     public bool isVisible;
 }

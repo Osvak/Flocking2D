@@ -36,7 +36,7 @@ partial struct BirdSpawnerSystem : ISystem
             quaternion rotation = quaternion.RotateZ(random.NextFloat(0f, math.PI2));
 
             state.EntityManager.SetComponentData(birds[i], prefabTransform.WithPosition(new float3(spawnPos, 0f)).WithRotation(rotation));
-            state.EntityManager.SetComponentData(birds[i], new BirdData { ID = i });
+            state.EntityManager.SetComponentData(birds[i], new BirdData { id = i });
         }
 
         birds.Dispose();

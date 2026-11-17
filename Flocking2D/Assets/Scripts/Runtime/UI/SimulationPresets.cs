@@ -2,7 +2,7 @@ public enum SimulationPreset
 {
     Custom,
     Murmuration,
-    TightSchool,
+    Tight,
     Chaotic
 }
 
@@ -14,8 +14,8 @@ public static class SimulationPresets
         {
             case SimulationPreset.Murmuration:
                 return WithBehavior(current, Murmuration());
-            case SimulationPreset.TightSchool:
-                return WithBehavior(current, TightSchool());
+            case SimulationPreset.Tight:
+                return WithBehavior(current, Tight());
             case SimulationPreset.Chaotic:
                 return WithBehavior(current, Chaotic());
             default:
@@ -33,7 +33,7 @@ public static class SimulationPresets
             edgeWeight = 3f,
             turnRate = 6f,
             fieldOfViewDegrees = 270f,
-            neighborsRadius = 2.5f,
+            neighborRadius = 2.5f,
             personalRadius = 0.7f,
             cruiseSpeed = 4f,
             minSpeed = 2.5f,
@@ -44,7 +44,7 @@ public static class SimulationPresets
         };
     }
 
-    private static SimulationConfigData TightSchool()
+    private static SimulationConfigData Tight()
     {
         return new SimulationConfigData
         {
@@ -54,7 +54,7 @@ public static class SimulationPresets
             edgeWeight = 3f,
             turnRate = 8f,
             fieldOfViewDegrees = 300f,
-            neighborsRadius = 1.5f,
+            neighborRadius = 1.5f,
             personalRadius = 0.5f,
             cruiseSpeed = 4f,
             minSpeed = 3f,
@@ -75,7 +75,7 @@ public static class SimulationPresets
             edgeWeight = 3f,
             turnRate = 12f,
             fieldOfViewDegrees = 200f,
-            neighborsRadius = 1.5f,
+            neighborRadius = 1.5f,
             personalRadius = 0.8f,
             cruiseSpeed = 5f,
             minSpeed = 2.5f,
@@ -94,7 +94,7 @@ public static class SimulationPresets
         target.edgeWeight = source.edgeWeight;
         target.turnRate = source.turnRate;
         target.fieldOfViewDegrees = source.fieldOfViewDegrees;
-        target.neighborsRadius = source.neighborsRadius;
+        target.neighborRadius = source.neighborRadius;
         target.personalRadius = source.personalRadius;
         target.cruiseSpeed = source.cruiseSpeed;
         target.minSpeed = source.minSpeed;

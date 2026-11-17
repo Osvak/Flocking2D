@@ -4,8 +4,8 @@ using UnityEngine.UIElements;
 
 public class PerformanceReadout : MonoBehaviour
 {
-    private const string labelName = "PerformanceLabel";
-    private const float refreshInterval = 0.25f;
+    private const string LabelName = "PerformanceLabel";
+    private const float RefreshInterval = 0.25f;
 
     [SerializeField] private UIDocument document;
 
@@ -29,10 +29,10 @@ public class PerformanceReadout : MonoBehaviour
         if (refreshTimer > 0f)
             return;
 
-        refreshTimer = refreshInterval;
+        refreshTimer = RefreshInterval;
 
         if (label == null)
-            label = document.rootVisualElement.Q<Label>(labelName);
+            label = document.rootVisualElement.Q<Label>(LabelName);
 
         int birdCount = birdQuery.CalculateEntityCount();
         label.text = $"{1f / smoothedDelta:0} FPS ({smoothedDelta * 1000f:0.0} ms)\nBirds: {birdCount}";

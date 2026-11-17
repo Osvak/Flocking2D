@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(UIDocument))]
 public class SimulationUiController : MonoBehaviour
 {
-    private const string defaultHelpText = "Hover a setting to see what it does.";
+    private const string DefaultHelpText = "Hover a setting to see what it does.";
 
     private VisualElement panel;
     private Label helpLabel;
@@ -17,7 +17,7 @@ public class SimulationUiController : MonoBehaviour
     private Slider edgeMarginSlider;
     private Slider turnRateSlider;
     private Slider fieldOfViewDegreesSlider;
-    private Slider neighborsRadiusSlider;
+    private Slider neighborRadiusSlider;
     private Slider personalRadiusSlider;
     private Slider cruiseSpeedSlider;
     private Slider minSpeedSlider;
@@ -47,15 +47,23 @@ public class SimulationUiController : MonoBehaviour
     private SimulationConfigData defaultConfig;
 
     private bool queriesCreated;
+    private bool hasDefaults;
     private bool isInitialized;
     private bool isPaused;
 
     private void OnEnable()
     {
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
+        VisualElement newPanel = root.Q<VisualElement>("Panel");
 
-        panel = root.Q<VisualElement>("Panel");
+        // if only this component was toggled the UI tree is the same one, so its callbacks are still bound
+        bool isAlreadyBound = newPanel == panel;
+
+        panel = newPanel;
         panel.SetEnabled(false);
+
+        if (isAlreadyBound)
+            return;
 
         Foldout settingsFoldout = root.Q<Foldout>("SettingsFoldout");
         settingsFoldout.contentContainer.style.flexGrow = 1f;
@@ -66,7 +74,7 @@ public class SimulationUiController : MonoBehaviour
         });
 
         helpLabel = root.Q<Label>("HelpLabel");
-        helpLabel.text = defaultHelpText;
+        helpLabel.text = DefaultHelpText;
 
         alignmentWeightSlider = BindSlider(root, "AlignmentWeight");
         separationWeightSlider = BindSlider(root, "SeparationWeight");
@@ -75,7 +83,7 @@ public class SimulationUiController : MonoBehaviour
         edgeMarginSlider = BindSlider(root, "EdgeMargin");
         turnRateSlider = BindSlider(root, "TurnRate");
         fieldOfViewDegreesSlider = BindSlider(root, "FieldOfViewDegrees");
-        neighborsRadiusSlider = BindSlider(root, "NeighborsRadius");
+        neighborRadiusSlider = BindSlider(root, "NeighborRadius");
         personalRadiusSlider = BindSlider(root, "PersonalRadius");
         cruiseSpeedSlider = BindSlider(root, "CruiseSpeed");
         minSpeedSlider = BindSlider(root, "MinSpeed");
@@ -111,7 +119,7 @@ public class SimulationUiController : MonoBehaviour
         {
             BindPresetButton(root, "PresetCustom", SimulationPreset.Custom),
             BindPresetButton(root, "PresetMurmuration", SimulationPreset.Murmuration),
-            BindPresetButton(root, "PresetTight", SimulationPreset.TightSchool),
+            BindPresetButton(root, "PresetTight", SimulationPreset.Tight),
             BindPresetButton(root, "PresetChaotic", SimulationPreset.Chaotic)
         };
     }
@@ -119,6 +127,10 @@ public class SimulationUiController : MonoBehaviour
     private void OnDisable()
     {
         Time.timeScale = 1f;
+
+        isPaused = false;
+        pauseButton.text = "Pause";
+        isInitialized = false;
     }
 
     private void Update()
@@ -148,11 +160,16 @@ public class SimulationUiController : MonoBehaviour
         if (configQuery.IsEmpty || spawnerQuery.IsEmpty)
             return;
 
-        defaultConfig = configQuery.GetSingleton<SimulationConfigData>();
-        ApplyConfigToUi(defaultConfig);
+        // the scene values are only read once, so Reset Values still works after a re-enable
+        if (!hasDefaults)
+        {
+            defaultConfig = configQuery.GetSingleton<SimulationConfigData>();
+            customConfig = defaultConfig;
+            currentPreset = SimulationPreset.Custom;
+            hasDefaults = true;
+        }
 
-        customConfig = defaultConfig;
-        currentPreset = SimulationPreset.Custom;
+        ApplyConfigToUi(configQuery.GetSingleton<SimulationConfigData>());
         UpdatePresetButtons();
 
         birdCountSlider.SetValueWithoutNotify(spawnerQuery.GetSingleton<SpawnerData>().birdAmount);
@@ -185,7 +202,7 @@ public class SimulationUiController : MonoBehaviour
         element.tooltip = string.Empty;
 
         element.RegisterCallback<PointerEnterEvent>(evt => helpLabel.text = description);
-        element.RegisterCallback<PointerLeaveEvent>(evt => helpLabel.text = defaultHelpText);
+        element.RegisterCallback<PointerLeaveEvent>(evt => helpLabel.text = DefaultHelpText);
     }
 
     private void OnSliderChanged(ChangeEvent<float> changeEvent)
@@ -234,7 +251,7 @@ public class SimulationUiController : MonoBehaviour
             edgeMargin = edgeMarginSlider.value,
             turnRate = turnRateSlider.value,
             fieldOfViewDegrees = fieldOfViewDegreesSlider.value,
-            neighborsRadius = neighborsRadiusSlider.value,
+            neighborRadius = neighborRadiusSlider.value,
             personalRadius = personalRadiusSlider.value,
             cruiseSpeed = cruiseSpeedSlider.value,
             minSpeed = minSpeedSlider.value,
@@ -260,7 +277,7 @@ public class SimulationUiController : MonoBehaviour
         edgeMarginSlider.SetValueWithoutNotify(config.edgeMargin);
         turnRateSlider.SetValueWithoutNotify(config.turnRate);
         fieldOfViewDegreesSlider.SetValueWithoutNotify(config.fieldOfViewDegrees);
-        neighborsRadiusSlider.SetValueWithoutNotify(config.neighborsRadius);
+        neighborRadiusSlider.SetValueWithoutNotify(config.neighborRadius);
         personalRadiusSlider.SetValueWithoutNotify(config.personalRadius);
         cruiseSpeedSlider.SetValueWithoutNotify(config.cruiseSpeed);
         minSpeedSlider.SetValueWithoutNotify(config.minSpeed);

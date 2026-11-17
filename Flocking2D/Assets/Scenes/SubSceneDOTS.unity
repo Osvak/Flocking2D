@@ -171,7 +171,7 @@ MonoBehaviour:
     edgeMargin: 2
     turnRate: 4
     fieldOfViewDegrees: 240
-    neighborsRadius: 1.5
+    neighborRadius: 1.5
     personalRadius: 0.4
     cruiseSpeed: 3
     minSpeed: 1.5

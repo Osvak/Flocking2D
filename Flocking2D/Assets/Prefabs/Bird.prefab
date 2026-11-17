@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 772e0ffca130e2c40a54ecd049ed826d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BirdAuthoring
-  velocity: 1.5
+  speed: 1.5

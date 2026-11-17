@@ -23,7 +23,7 @@
                 <ui:Slider name="EdgeMargin" label="Edge Margin" low-value="0" high-value="10" show-input-field="true" tooltip="How far from the edge birds start turning back." />
                 <ui:Slider name="TurnRate" label="Turn Rate" low-value="0" high-value="20" show-input-field="true" tooltip="How fast birds turn." />
                 <ui:Slider name="FieldOfViewDegrees" label="Field Of View" low-value="30" high-value="360" show-input-field="true" tooltip="View angle in degrees. 360 sees all around." />
-                <ui:Slider name="NeighborsRadius" label="Neighbor Radius" low-value="0.1" high-value="20" show-input-field="true" tooltip="How far a bird can see its neighbors." />
+                <ui:Slider name="NeighborRadius" label="Neighbor Radius" low-value="0.1" high-value="20" show-input-field="true" tooltip="How far a bird can see its neighbors." />
                 <ui:Slider name="PersonalRadius" label="Personal Radius" low-value="0.1" high-value="10" show-input-field="true" tooltip="Birds closer than this push each other away, even outside the view angle." />
                 <ui:Label text="Speed" style="-unity-font-style: bold; margin-top: 8px;" />
                 <ui:Slider name="CruiseSpeed" label="Cruise" low-value="0" high-value="20" show-input-field="true" tooltip="Speed a bird flies at on its own." />

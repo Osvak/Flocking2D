@@ -3,7 +3,7 @@ using UnityEngine;
 
 class BirdAuthoring : MonoBehaviour
 {
-    [SerializeField] private float velocity;
+    [SerializeField] private float speed;
 
     class BirdAuthoringBaker : Baker<BirdAuthoring>
     {
@@ -12,7 +12,7 @@ class BirdAuthoring : MonoBehaviour
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
 
             AddComponent(entity, new BirdData());
-            AddComponent(entity, new BirdMovement { velocity = authoring.velocity });
+            AddComponent(entity, new BirdMovement { speed = authoring.speed });
             AddBuffer<CloseNeighbors>(entity);
         }
     }

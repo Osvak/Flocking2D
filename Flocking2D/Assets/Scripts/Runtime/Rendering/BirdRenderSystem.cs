@@ -9,9 +9,9 @@ using UnityEngine.Rendering;
 [UpdateInGroup(typeof(PresentationSystemGroup))]
 public partial class BirdRenderSystem : SystemBase
 {
-    private const int maxBatchSize = 1023;
+    private const int MaxBatchSize = 1023;
 
-    private static readonly int baseColorId = Shader.PropertyToID("_BaseColor");
+    private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
 
     private EntityQuery birdQuery;
     private BirdRenderSettings settings;
@@ -33,7 +33,7 @@ public partial class BirdRenderSystem : SystemBase
             ComponentType.ReadOnly<BirdMovement>());
 
         propertyBlock = new MaterialPropertyBlock();
-        colorBatch = new Vector4[maxBatchSize];
+        colorBatch = new Vector4[MaxBatchSize];
     }
 
     protected override void OnDestroy()
@@ -92,12 +92,12 @@ public partial class BirdRenderSystem : SystemBase
 
         NativeArray<Matrix4x4> instanceMatrices = matrices.Reinterpret<Matrix4x4>();
 
-        for (int start = 0; start < birdCount; start += maxBatchSize)
+        for (int start = 0; start < birdCount; start += MaxBatchSize)
         {
-            int batchCount = math.min(maxBatchSize, birdCount - start);
+            int batchCount = math.min(MaxBatchSize, birdCount - start);
 
             NativeArray<Vector4>.Copy(colors, start, colorBatch, 0, batchCount);
-            propertyBlock.SetVectorArray(baseColorId, colorBatch);
+            propertyBlock.SetVectorArray(BaseColorId, colorBatch);
 
             Graphics.RenderMeshInstanced(renderParams, settings.mesh, 0, instanceMatrices, batchCount, start);
         }
@@ -141,7 +141,7 @@ partial struct BuildInstancesJob : IJobEntity
 
     void Execute([EntityIndexInQuery] int index, in LocalTransform localTransform, in BirdMovement birdMovement)
     {
-        float t = math.saturate(0.5f + (birdMovement.velocity - cruiseSpeed) * inverseColorSpan);
+        float t = math.saturate(0.5f + (birdMovement.speed - cruiseSpeed) * inverseColorSpan);
         float4 color = math.lerp(slowColor, fastColor, t);
 
         matrices[index] = localTransform.ToMatrix();

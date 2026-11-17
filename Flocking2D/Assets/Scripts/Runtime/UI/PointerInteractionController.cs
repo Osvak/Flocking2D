@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(UIDocument))]
 public class PointerInteractionController : MonoBehaviour
 {
-    private const float selectionRingSize = 30f;
+    private const float SelectionRingSize = 30f;
 
     [SerializeField] private UIDocument settingsDocument;
     [SerializeField] private Camera targetCamera;
@@ -77,8 +77,8 @@ public class PointerInteractionController : MonoBehaviour
         MakeCircle(selectionRing);
         MakeCircle(mouseRing);
 
-        selectionRing.style.width = selectionRingSize;
-        selectionRing.style.height = selectionRingSize;
+        selectionRing.style.width = SelectionRingSize;
+        selectionRing.style.height = SelectionRingSize;
 
         deselectButton = root.Q<Button>("DeselectButton");
         deselectButton.clicked += Deselect;
@@ -91,6 +91,22 @@ public class PointerInteractionController : MonoBehaviour
         debugOverlay.style.bottom = 0f;
         debugOverlay.generateVisualContent += OnGenerateDebugContent;
         root.Insert(0, debugOverlay);
+    }
+
+    private void OnDisable()
+    {
+        deselectButton.clicked -= Deselect;
+        debugOverlay.generateVisualContent -= OnGenerateDebugContent;
+        debugOverlay.RemoveFromHierarchy();
+
+        // stop pulling birds if the right button was held when this got disabled
+        World world = World.DefaultGameObjectInjectionWorld;
+
+        if (isInitialized && world != null && world.IsCreated)
+            mouseQuery.SetSingleton(new MouseInputData());
+
+        hasSelection = false;
+        isInitialized = false;
     }
 
     private void Update()
@@ -284,19 +300,19 @@ public class PointerInteractionController : MonoBehaviour
         if (heading < 0f)
             heading += 360f;
 
-        birdNameLabel.text = $"Bird {birdData.ID}";
+        birdNameLabel.text = $"Bird {birdData.id}";
         positionValueLabel.text = $"{localTransform.Position.x:F2}, {localTransform.Position.y:F2}";
         headingValueLabel.text = $"{heading:F0}°";
-        speedValueLabel.text = $"{birdMovement.velocity:F2}";
+        speedValueLabel.text = $"{birdMovement.speed:F2}";
         neighborsValueLabel.text = CountVisibleNeighbors(neighbors).ToString();
-        neighborRadiusValueLabel.text = $"{config.neighborsRadius:F2}";
+        neighborRadiusValueLabel.text = $"{config.neighborRadius:F2}";
         personalRadiusValueLabel.text = $"{config.personalRadius:F2}";
 
         Vector3 worldPosition = new Vector3(localTransform.Position.x, localTransform.Position.y, localTransform.Position.z);
         Vector2 center = RuntimePanelUtils.CameraTransformWorldToPanel(panel, worldPosition, targetCamera);
 
-        selectionRing.style.left = center.x - selectionRingSize * 0.5f;
-        selectionRing.style.top = center.y - selectionRingSize * 0.5f;
+        selectionRing.style.left = center.x - SelectionRingSize * 0.5f;
+        selectionRing.style.top = center.y - SelectionRingSize * 0.5f;
 
         UpdateDebugOverlay(worldPosition, forward, config, center);
     }
@@ -314,7 +330,7 @@ public class PointerInteractionController : MonoBehaviour
             headingAngle = Mathf.Atan2(headingVector.y, headingVector.x) * Mathf.Rad2Deg,
             halfFieldOfView = config.fieldOfViewDegrees * 0.5f,
             personalRadiusPixels = config.personalRadius * pixelsPerUnit,
-            neighborRadiusPixels = config.neighborsRadius * pixelsPerUnit,
+            neighborRadiusPixels = config.neighborRadius * pixelsPerUnit,
             drawPersonalRadius = config.showPersonalRadius,
             drawNeighborRadius = config.showNeighborRadius,
             drawFieldOfView = config.showFieldOfView

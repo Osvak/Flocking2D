@@ -12,7 +12,7 @@ public struct SimulationConfigData : IComponentData
 
     public float turnRate;
     public float fieldOfViewDegrees;
-    public float neighborsRadius;
+    public float neighborRadius;
     public float personalRadius;
 
     public float cruiseSpeed;
